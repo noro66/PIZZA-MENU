@@ -61,15 +61,16 @@ function Menu(){
             Our Menu.
           </h2>
        <ul className='pizzas'>
-         {  pizzaData.map((pizza)=>{
-          return  <Pizza pizza={pizza}/>
-          })}
+         {pizzaData.length > 0 ?    (pizzaData.map((pizza, index)=>{
+          return  <Pizza pizza={pizza} key={pizza.name}/>
+          })) : <p>We're still working on our menu please come back later ;)</p>}
        </ul>
     </main>
   )
 }
 
 function Pizza({pizza}){
+  if(pizza.soldOut) return null;
   return (
     <li className='pizza'>
       <img src={pizza.photoName} alt={pizza.photoName}/>
@@ -83,8 +84,17 @@ function Pizza({pizza}){
 }
 
 function Footer(){
+const hour = new Date().getHours();
+const openHour = 9;
+const closeHour = 21;
+const isOpen = hour >= openHour && hour <= closeHour;
   return <footer className='footer'>
-   {new Date().toLocaleString()}, We're currently open.
+   {isOpen ?  (
+    <div className='order'>
+        <p>{new Date().toLocaleString()}, We're currently open Entil {closeHour}:00</p>
+        <button className='btn'>Order</button>
+    </div>
+   ) : <p>we are happy to welcome you between {openHour}:00 and  {closeHour}:00 </p>}
   </footer >
 }
 
